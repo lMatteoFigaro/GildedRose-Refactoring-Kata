@@ -6,14 +6,59 @@ import (
 	"github.com/emilybache/gildedrose-refactoring-kata/gildedrose"
 )
 
-func Test_Foo(t *testing.T) {
-	var items = []*gildedrose.Item{
-		{"foo", 0, 0},
+func TestUpdateQuality(t *testing.T) {
+	tests := []struct {
+		name   string
+		items  []*gildedrose.Item
+		expect []*gildedrose.Item
+	}{
+		{
+			name: "Aged Brie",
+			items: []*gildedrose.Item{
+				{Name: "Aged Brie", SellIn: 2, Quality: 0},
+			},
+			expect: []*gildedrose.Item{
+				{Name: "Aged Brie", SellIn: 1, Quality: 1},
+			},
+		},
+		{
+			name: "Backstage passes",
+			items: []*gildedrose.Item{
+				{Name: "Backstage passes to a TAFKAL80ETC concert", SellIn: 5, Quality: 20},
+			},
+			expect: []*gildedrose.Item{
+				{Name: "Backstage passes to a TAFKAL80ETC concert", SellIn: 4, Quality: 23},
+			},
+		},
+		{
+			name: "regular item",
+			items: []*gildedrose.Item{
+				{Name: "Regular Item", SellIn: 5, Quality: 20},
+			},
+			expect: []*gildedrose.Item{
+				{Name: "Regular Item", SellIn: 4, Quality: 19},
+			},
+		},
+		{
+			name: "regular item sell in 0",
+			items: []*gildedrose.Item{
+				{Name: "Regular Item", SellIn: 0, Quality: 20},
+			},
+			expect: []*gildedrose.Item{
+				{Name: "Regular Item", SellIn: -1, Quality: 18},
+			},
+		},
+		// more test cases
 	}
 
-	gildedrose.UpdateQuality(items)
-
-	if items[0].Name != "fixme" {
-		t.Errorf("Name: Expected %s but got %s ", "fixme", items[0].Name)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gildedrose.UpdateQuality(tt.items)
+			for i, item := range tt.items {
+				if item.Name != tt.expect[i].Name || item.SellIn != tt.expect[i].SellIn || item.Quality != tt.expect[i].Quality {
+					t.Errorf("UpdateQuality() = %v, want %v", item, tt.expect[i])
+				}
+			}
+		})
 	}
 }
