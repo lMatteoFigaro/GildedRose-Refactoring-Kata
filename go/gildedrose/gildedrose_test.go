@@ -58,7 +58,16 @@ func TestUpdateQuality(t *testing.T) {
 			},
 		},
 		{
-			name: "Backstage passes",
+			name: "Backstage passes max quality",
+			items: []*gildedrose.Item{
+				{Name: "Backstage passes to a TAFKAL80ETC concert", SellIn: 5, Quality: 50},
+			},
+			expect: []*gildedrose.Item{
+				{Name: "Backstage passes to a TAFKAL80ETC concert", SellIn: 4, Quality: 50},
+			},
+		},
+		{
+			name: "Backstage passes 5 days",
 			items: []*gildedrose.Item{
 				{Name: "Backstage passes to a TAFKAL80ETC concert", SellIn: 5, Quality: 20},
 			},
