@@ -6,6 +6,7 @@ type Item struct {
 }
 
 func UpdateQuality(items []*Item) {
+
 	for i := 0; i < len(items); i++ {
 
 		if items[i].Name != "Aged Brie" && items[i].Name != "Backstage passes to a TAFKAL80ETC concert" {
@@ -55,4 +56,43 @@ func UpdateQuality(items []*Item) {
 		}
 	}
 
+}
+
+func handleAgedBrie(item Item) Item {
+	if item.Quality == 50 {
+		item.SellIn--
+		return item
+	}
+
+	if item.SellIn > 0 {
+		item.Quality++
+		item.SellIn--
+		return item
+	}
+
+	item.Quality += 2
+	item.SellIn--
+
+	return item
+}
+
+func handleBaskstagePass(item Item) Item {
+	if item.Quality == 50 && item.SellIn > 0 {
+		item.SellIn--
+		return item
+	}
+
+	if item.SellIn <= 5 {
+		item.SellIn--
+		item.Quality += 3
+		return item
+	}
+
+	if item.SellIn <= 10 {
+		item.SellIn--
+		item.Quality += 2
+		return item
+	}
+
+	return item
 }
