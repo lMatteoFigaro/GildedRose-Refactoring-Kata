@@ -22,6 +22,42 @@ func TestUpdateQuality(t *testing.T) {
 			},
 		},
 		{
+			name: "Aged Brie expired",
+			items: []*gildedrose.Item{
+				{Name: "Aged Brie", SellIn: 0, Quality: 0},
+			},
+			expect: []*gildedrose.Item{
+				{Name: "Aged Brie", SellIn: -1, Quality: 2},
+			},
+		},
+		{
+			name: "Aged Brie maximum quality",
+			items: []*gildedrose.Item{
+				{Name: "Aged Brie", SellIn: 30, Quality: 50},
+			},
+			expect: []*gildedrose.Item{
+				{Name: "Aged Brie", SellIn: 29, Quality: 50},
+			},
+		},
+		{
+			name: "Backstage passes 0 day",
+			items: []*gildedrose.Item{
+				{Name: "Backstage passes to a TAFKAL80ETC concert", SellIn: 0, Quality: 20},
+			},
+			expect: []*gildedrose.Item{
+				{Name: "Backstage passes to a TAFKAL80ETC concert", SellIn: -1, Quality: 0},
+			},
+		},
+		{
+			name: "Backstage passes 9 days",
+			items: []*gildedrose.Item{
+				{Name: "Backstage passes to a TAFKAL80ETC concert", SellIn: 9, Quality: 20},
+			},
+			expect: []*gildedrose.Item{
+				{Name: "Backstage passes to a TAFKAL80ETC concert", SellIn: 8, Quality: 22},
+			},
+		},
+		{
 			name: "Backstage passes",
 			items: []*gildedrose.Item{
 				{Name: "Backstage passes to a TAFKAL80ETC concert", SellIn: 5, Quality: 20},
@@ -40,7 +76,7 @@ func TestUpdateQuality(t *testing.T) {
 			},
 		},
 		{
-			name: "regular item sell in 0",
+			name: "regular item expired",
 			items: []*gildedrose.Item{
 				{Name: "Regular Item", SellIn: 0, Quality: 20},
 			},
@@ -48,7 +84,25 @@ func TestUpdateQuality(t *testing.T) {
 				{Name: "Regular Item", SellIn: -1, Quality: 18},
 			},
 		},
+		{
+			name: "regular item no quality",
+			items: []*gildedrose.Item{
+				{Name: "Regular Item", SellIn: 30, Quality: 0},
+			},
+			expect: []*gildedrose.Item{
+				{Name: "Regular Item", SellIn: 29, Quality: 0},
+			},
+		},
 		// more test cases
+		{
+			name: "sulfuras regular",
+			items: []*gildedrose.Item{
+				{Name: "Sulfuras, Hand of Ragnaros", SellIn: 30, Quality: 40},
+			},
+			expect: []*gildedrose.Item{
+				{Name: "Sulfuras, Hand of Ragnaros", SellIn: 30, Quality: 40},
+			},
+		},
 	}
 
 	for _, tt := range tests {
